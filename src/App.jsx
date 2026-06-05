@@ -350,7 +350,10 @@ export default function UserDetailsPage() {
                     : "text-neutral-500 hover:text-neutral-700"}`}
               >
                 <DeviceIcon type={d.type} className="h-3.5 w-3.5" />
-                {d.name}
+                <div className="text-left">
+                  <div>{d.name}</div>
+                  <div className="text-[11px] font-normal text-neutral-400">{d.os}</div>
+                </div>
               </button>
             ))}
             <div className="ml-auto pb-2 text-xs text-neutral-400">
