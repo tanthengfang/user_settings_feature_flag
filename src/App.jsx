@@ -48,6 +48,8 @@ const DEVICE_DATA = [
     app: "3.8.2",
     lastSeen: "2026-06-04 09:12",
     current: true,
+    totalRam: "12 GB",
+    availableMemory: "4.2 GB",
     settings: [
       {
         group: "Connection",
@@ -55,13 +57,17 @@ const DEVICE_DATA = [
         items: [
           { name: "Connection Safeguard Mode", value: "On", type: "bool", changed: "2026-05-30" },
           { name: "Stable Mode", value: "On", type: "bool", changed: "2026-04-12" },
+          { name: "Smart/Global Mode", value: "Smart", type: "text", changed: "2026-05-30" },
+          { name: "VPN Access Permission", value: "Granted", type: "text", tone: "emerald", changed: "2026-05-30" },
         ],
       },
       {
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-{ name: "Bypass VPN", value: "On", type: "bool", changed: "2026-05-30" },
+          { name: "Bypass VPN", value: "On", type: "bool", changed: "2026-05-30" },
+          { name: "Manage Excluded Apps", value: "3 apps", type: "list", changed: "2026-05-30", list: ["com.tencent.mm", "com.taobao.taobao", "com.unionpay"] },
+          { name: "Manage Excluded Websites", value: "2 sites", type: "list", changed: "2026-05-22", list: ["bank.example.cn", "gov.example.cn"] },
         ],
       },
       {
@@ -70,6 +76,7 @@ const DEVICE_DATA = [
         items: [
           { name: "Use Local DNS", value: "Off", type: "bool", changed: "2026-03-01" },
           { name: "Ad-Block", value: "On", type: "bool", changed: "2026-05-11" },
+          { name: "IPv6", value: "On", type: "bool", changed: "2026-04-20" },
         ],
       },
     ],
@@ -95,6 +102,8 @@ const DEVICE_DATA = [
     app: "3.8.0",
     lastSeen: "2026-06-03 21:40",
     current: false,
+    totalRam: "16 GB",
+    availableMemory: "8.1 GB",
     settings: [
       {
         group: "Connection",
@@ -103,13 +112,17 @@ const DEVICE_DATA = [
           { name: "Connection Safeguard Mode", value: "On", type: "bool", changed: "2026-05-28" },
           { name: "Stable Mode", value: "Off", type: "bool", changed: "2026-04-01" },
           { name: "Tun2Proxy", value: "On", type: "bool", changed: "2026-05-10" },
+          { name: "Smart/Global Mode", value: "Global", type: "text", changed: "2026-04-15" },
+          { name: "VPN Access Permission", value: "Granted", type: "text", tone: "emerald", changed: "2026-05-28" },
         ],
       },
       {
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-{ name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-04-15" },
+          { name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-04-15" },
+          { name: "Manage Excluded Apps", value: "0 apps", type: "list", changed: "2026-04-15", list: [] },
+          { name: "Manage Excluded Websites", value: "1 site", type: "list", changed: "2026-05-01", list: ["gov.example.cn"] },
         ],
       },
       {
@@ -118,6 +131,7 @@ const DEVICE_DATA = [
         items: [
           { name: "Use Local DNS", value: "On", type: "bool", changed: "2026-02-14" },
           { name: "Ad-Block", value: "On", type: "bool", changed: "2026-05-11" },
+          { name: "IPv6", value: "On", type: "bool", changed: "2026-04-20" },
         ],
       },
     ],
@@ -143,6 +157,8 @@ const DEVICE_DATA = [
     app: "3.7.5",
     lastSeen: "2026-05-29 20:11",
     current: false,
+    totalRam: "4 GB",
+    availableMemory: "1.8 GB",
     settings: [
       {
         group: "Connection",
@@ -150,13 +166,17 @@ const DEVICE_DATA = [
         items: [
           { name: "Connection Safeguard Mode", value: "Off", type: "bool", changed: "2026-03-12" },
           { name: "Stable Mode", value: "On", type: "bool", changed: "2026-03-12" },
+          { name: "Smart/Global Mode", value: "Smart", type: "text", changed: "2026-03-12" },
+          { name: "VPN Access Permission", value: "Denied", type: "text", tone: "rose", changed: "2026-03-12" },
         ],
       },
       {
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-{ name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-03-12" },
+          { name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-03-12" },
+          { name: "Manage Excluded Apps", value: "0 apps", type: "list", changed: "2026-03-12", list: [] },
+          { name: "Manage Excluded Websites", value: "0 sites", type: "list", changed: "2026-03-12", list: [] },
         ],
       },
       {
@@ -165,6 +185,7 @@ const DEVICE_DATA = [
         items: [
           { name: "Use Local DNS", value: "Off", type: "bool", changed: "2026-03-01" },
           { name: "Ad-Block", value: "Off", type: "bool", changed: "2026-03-12" },
+          { name: "IPv6", value: "Not Supported", type: "text", tone: "neutral", changed: "2026-03-12" },
         ],
       },
     ],
@@ -264,9 +285,10 @@ function SettingRow({ item }) {
           <span className="text-sm text-neutral-700">{item.name}</span>
         </div>
         <div className="flex items-center gap-3">
-{item.type === "bool"
+          <span className="text-xs text-neutral-400">changed {item.changed}</span>
+          {item.type === "bool"
             ? <StatePill on={item.value === "On"} />
-            : <Pill tone={isList ? "blue" : "amber"}>{item.value}</Pill>}
+            : <Pill tone={item.tone ?? (isList ? "blue" : "amber")}>{item.value}</Pill>}
         </div>
       </div>
       {isList && open && (
@@ -353,7 +375,7 @@ export default function UserDetailsPage() {
               </button>
             ))}
             <div className="ml-auto pb-2 text-xs text-neutral-400">
-              last seen <span className="font-mono">{device.lastSeen}</span> · app v{device.app}
+              last seen <span className="font-mono">{device.lastSeen}</span> · app v{device.app} · RAM {device.totalRam} total / {device.availableMemory} free
             </div>
           </div>
 
@@ -386,17 +408,17 @@ export default function UserDetailsPage() {
                   {device.flags.filter(f => f.enabled).length}/{device.flags.length} enabled
                 </span>
               </div>
-              <div className="space-y-1.5 overflow-y-auto" style={{ maxHeight: "calc(6 * 52px)" }}>
+              <div className="space-y-1.5 overflow-y-auto" style={{ maxHeight: "calc(9 * 52px)" }}>
                 {device.flags.map((f) => (
                   <div key={f.key} className="flex items-center justify-between rounded-lg border border-neutral-100 px-3 py-2">
                     <div className="min-w-0">
                       <div className="truncate font-mono text-xs text-neutral-700">{f.key}</div>
-                      <div className="truncate text-[11px] text-neutral-400">{f.description ?? "Enabled: Visible · Disabled: Invisible"}</div>
+                      <div className="truncate text-[11px] text-neutral-400">{f.description ?? "ON: Visible · OFF: Invisible"}</div>
                     </div>
                     <div className="ml-2 shrink-0">
                       {f.variant
                         ? <Pill tone="violet">{f.variant}</Pill>
-                        : <StatePill on={f.enabled} onLabel="Enabled" offLabel="Disabled" />}
+                        : <StatePill on={f.enabled} onLabel="ON" offLabel="OFF" />}
                     </div>
                   </div>
                 ))}
