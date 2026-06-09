@@ -61,8 +61,7 @@ const DEVICE_DATA = [
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-          { name: "Application Mode", value: "Per-app", type: "text", changed: "2026-05-30" },
-          { name: "Bypass VPN", value: "On", type: "bool", changed: "2026-05-30" },
+{ name: "Bypass VPN", value: "On", type: "bool", changed: "2026-05-30" },
         ],
       },
       {
@@ -110,8 +109,7 @@ const DEVICE_DATA = [
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-          { name: "Application Mode", value: "Global", type: "text", changed: "2026-04-15" },
-          { name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-04-15" },
+{ name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-04-15" },
         ],
       },
       {
@@ -158,8 +156,7 @@ const DEVICE_DATA = [
         group: "Routing / Split Tunneling",
         icon: Route,
         items: [
-          { name: "Application Mode", value: "Global", type: "text", changed: "2026-03-12" },
-          { name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-03-12" },
+{ name: "Bypass VPN", value: "Off", type: "bool", changed: "2026-03-12" },
         ],
       },
       {
@@ -267,8 +264,7 @@ function SettingRow({ item }) {
           <span className="text-sm text-neutral-700">{item.name}</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-neutral-400">changed {item.changed}</span>
-          {item.type === "bool"
+{item.type === "bool"
             ? <StatePill on={item.value === "On"} />
             : <Pill tone={isList ? "blue" : "amber"}>{item.value}</Pill>}
         </div>
@@ -390,7 +386,7 @@ export default function UserDetailsPage() {
                   {device.flags.filter(f => f.enabled).length}/{device.flags.length} enabled
                 </span>
               </div>
-              <div className="space-y-1.5 overflow-y-auto" style={{ maxHeight: "calc(7 * 52px)" }}>
+              <div className="space-y-1.5 overflow-y-auto" style={{ maxHeight: "calc(6 * 52px)" }}>
                 {device.flags.map((f) => (
                   <div key={f.key} className="flex items-center justify-between rounded-lg border border-neutral-100 px-3 py-2">
                     <div className="min-w-0">
