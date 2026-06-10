@@ -375,7 +375,7 @@ export default function UserDetailsPage() {
               </button>
             ))}
             <div className="ml-auto pb-2 text-xs text-neutral-400">
-              last seen <span className="font-mono">{device.lastSeen}</span> · app v{device.app} · RAM {device.totalRam} total / {device.availableMemory} free
+              last seen <span className="font-mono">{device.lastSeen}</span> · app v{device.app} · RAM {device.totalRam} total
             </div>
           </div>
 
